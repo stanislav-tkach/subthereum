@@ -1,0 +1,26 @@
+[[bin]]
+name = "subthereum"
+path = "src/main.rs"
+
+[package]
+name = "subthereum"
+version = "0.1.0"
+authors = ["Parity Technologies <admin@parity.io>"]
+edition = "2018"
+build = "build.rs"
+
+[dependencies]
+runtime = { package = "subthereum-runtime", path = "runtime" }
+
+[build-dependencies]
+vergen = "3.0.4"
+
+[workspace]
+members = [
+    "primitives",
+    "runtime",
+]
+
+[profile.release]
+# Substrate runtime requires unwinding.
+panic = "unwind"
