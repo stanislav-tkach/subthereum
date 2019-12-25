@@ -7,64 +7,66 @@ build = "build.rs"
 
 [dependencies]
 primitives = { package = "subthereum-primitives", path = "../primitives", default-features = false }
-aura = { package = "pallet-aura", git = "https://github.com/paritytech/substrate", default-features = false }
-aura-primitives = { package = "sp-consensus-aura", git = "https://github.com/paritytech/substrate", default-features = false }
-balances = { package = "pallet-balances", git = "https://github.com/paritytech/substrate", default-features = false }
-block-builder-api = { package = "sp-block-builder", git = "https://github.com/paritytech/substrate", default-features = false}
+
 codec = { package = "parity-scale-codec", version = "1.0.0", default-features = false, features = ["derive"] }
-executive = { package = "frame-executive", git = "https://github.com/paritytech/substrate", default-features = false }
-grandpa = { package = "pallet-grandpa", git = "https://github.com/paritytech/substrate", default-features = false }
-indices = { package = "pallet-indices", git = "https://github.com/paritytech/substrate", default-features = false }
-inherents = { package = "sp-inherents", git = "https://github.com/paritytech/substrate", default-features = false}
-offchain-primitives = { package = "sp-offchain", git = "https://github.com/paritytech/substrate", default-features = false }
-sp-primitives = { package = "sp-core", git = "https://github.com/paritytech/substrate", default-features = false }
-randomness-collective-flip = { package = "pallet-randomness-collective-flip", git = "https://github.com/paritytech/substrate", default-features = false }
-sp-std = { git = "https://github.com/paritytech/substrate", default-features = false }
-sp-io = { git = "https://github.com/paritytech/substrate", default-features = false }
 safe-mix = { version = "1.0.0", default-features = false }
 serde = { version = "1.0.101", optional = true, features = ["derive"] }
-sp-api = { git = "https://github.com/paritytech/substrate", default-features = false }
-sp-runtime = { git = "https://github.com/paritytech/substrate", default-features = false }
-sp-session = { git = "https://github.com/paritytech/substrate", default-features = false }
-sudo = { package = "pallet-sudo", git = "https://github.com/paritytech/substrate", default-features = false }
-support = { package = "frame-support", git = "https://github.com/paritytech/substrate", default-features = false }
-system = { package = "frame-system", git = "https://github.com/paritytech/substrate", default-features = false }
-timestamp = { package = "pallet-timestamp", git = "https://github.com/paritytech/substrate", default-features = false }
-transaction-payment = { package = "pallet-transaction-payment", git = "https://github.com/paritytech/substrate", default-features = false }
-sp-transaction-pool = { package = "sp-transaction-pool", git = "https://github.com/paritytech/substrate", default-features = false }
-version = { package = "sp-version", git = "https://github.com/paritytech/substrate", default-features = false }
+
+aura = { version = "2.0.0", default-features = false, package = "pallet-aura", git = "https://github.com/paritytech/substrate" }
+balances = { version = "2.0.0", default-features = false, package = "pallet-balances", git = "https://github.com/paritytech/substrate" }
+frame-support = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+grandpa = { version = "2.0.0", default-features = false, package = "pallet-grandpa", git = "https://github.com/paritytech/substrate" }
+indices = { version = "2.0.0", default-features = false, package = "pallet-indices", git = "https://github.com/paritytech/substrate" }
+randomness-collective-flip = { version = "2.0.0", default-features = false, package = "pallet-randomness-collective-flip", git = "https://github.com/paritytech/substrate" }
+sudo = { version = "2.0.0", default-features = false, package = "pallet-sudo", git = "https://github.com/paritytech/substrate" }
+system = { version = "2.0.0", default-features = false, package = "frame-system", git = "https://github.com/paritytech/substrate" }
+timestamp = { version = "2.0.0", default-features = false, package = "pallet-timestamp", git = "https://github.com/paritytech/substrate" }
+transaction-payment = { version = "2.0.0", default-features = false, package = "pallet-transaction-payment", git = "https://github.com/paritytech/substrate" }
+frame-executive = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-api = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-block-builder = { default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-consensus-aura = { version = "0.8", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-core = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-inherents = { default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-io = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-offchain = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-runtime = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-session = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-std = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-transaction-pool = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
+sp-version = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
 
 [build-dependencies]
-wasm-builder-runner = { package = "substrate-wasm-builder-runner", version = "1.0.4" }
+wasm-builder-runner = { version = "1.0.4", package = "substrate-wasm-builder-runner", git = "https://github.com/paritytech/substrate" }
 
 [features]
 default = ["std"]
 std = [
     "primitives/std",
-	"aura-primitives/std",
+    "codec/std",
+    "safe-mix/std",
+    "serde",
 	"aura/std",
 	"balances/std",
-	"block-builder-api/std",
-	"codec/std",
-	"executive/std",
+	"frame-executive/std",
+	"frame-support/std",
 	"grandpa/std",
 	"indices/std",
-	"inherents/std",
-	"offchain-primitives/std",
-	"sp-primitives/std",
 	"randomness-collective-flip/std",
-	"sp-std/std",
-	"sp-io/std",
-	"safe-mix/std",
-	"serde",
 	"sp-api/std",
+	"sp-block-builder/std",
+	"sp-consensus-aura/std",
+	"sp-core/std",
+	"sp-inherents/std",
+	"sp-io/std",
+	"sp-offchain/std",
 	"sp-runtime/std",
 	"sp-session/std",
+	"sp-std/std",
+	"sp-transaction-pool/std",
+	"sp-version/std",
 	"sudo/std",
-	"support/std",
 	"system/std",
 	"timestamp/std",
 	"transaction-payment/std",
-	"sp-transaction-pool/std",
-	"version/std",
 ]
