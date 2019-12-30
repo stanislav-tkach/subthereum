@@ -6,13 +6,20 @@ edition = "2018"
 
 [dependencies]
 ethbloom = { version = "0.8.1", default-features = false }
-sp-primitives = { package = "sp-core", git = "https://github.com/paritytech/substrate", default-features = false }
+parity-scale-codec = { version = "1.1", default-features = false, feature = ["derive"] }
+serde = { version = "1.0", default-features = false }
+
+sp-core = { git = "https://github.com/paritytech/substrate", default-features = false }
 sp-std = { git = "https://github.com/paritytech/substrate", default-features = false }
+sp-runtime = { version = "2.0.0", default-features = false, git = "https://github.com/paritytech/substrate" }
 
 [features]
 default = ["std"]
 std = [
-    "ethbloom/std",
-    "sp-primitives/std",
-    "sp-std/std"
+    "ethbloom/serialize",
+    "parity-scale-codec/std",
+    "serde/std",
+    "sp-core/std",
+    "sp-std/std",
+    "sp-runtime/std",
 ]
