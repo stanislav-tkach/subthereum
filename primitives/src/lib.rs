@@ -89,11 +89,11 @@ impl HeaderT for Header {
 
     /// Returns a reference to the header number.
     fn number(&self) -> &Self::Number {
-        todo!();
+        &self.number
     }
     /// Sets the header number.
     fn set_number(&mut self, number: Self::Number) {
-        todo!();
+        self.number = number;
     }
 
     /// Returns a reference to the extrinsics root.
@@ -116,19 +116,19 @@ impl HeaderT for Header {
 
     /// Returns a reference to the parent hash.
     fn parent_hash(&self) -> &Self::Hash {
-        todo!();
+        &self.parent_hash
     }
     /// Sets the parent hash.
     fn set_parent_hash(&mut self, hash: Self::Hash) {
-        todo!();
+        self.parent_hash = hash;
     }
 
     /// Returns a reference to the digest.
     fn digest(&self) -> &Digest<Self::Hash> {
-        todo!();
+        &self.digest
     }
     /// Get a mutable reference to the digest.
     fn digest_mut(&mut self) -> &mut Digest<Self::Hash> {
-        todo!();
+        &mut self.digest
     }
 }
