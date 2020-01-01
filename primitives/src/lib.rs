@@ -1,5 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
+mod bloom;
+
 use ethbloom::Bloom;
 use parity_scale_codec as codec;
 #[cfg(feature = "std")]
