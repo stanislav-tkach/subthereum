@@ -2,17 +2,17 @@
 
 mod bloom;
 
-use ethbloom::Bloom;
-use parity_scale_codec as codec;
-#[cfg(feature = "std")]
-use serde::{Deserialize, Serialize};
-
 use sp_core::{H160, H256, U256};
 use sp_runtime::{
     generic::Digest,
     traits::{BlakeTwo256, Header as HeaderT},
 };
 use sp_std::prelude::*;
+use parity_scale_codec::{Encode, Decode};
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
+
+use bloom::Bloom;
 
 pub type Hash = H256;
 
@@ -21,7 +21,7 @@ pub type Address = H160;
 
 pub type BlockNumber = u64;
 
-#[derive(PartialEq, Eq, Clone, Default, sp_core::RuntimeDebug)]
+#[derive(PartialEq, Eq, Clone, Default, sp_core::RuntimeDebug, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "std", serde(rename_all = "camelCase"))]
 #[cfg_attr(feature = "std", serde(deny_unknown_fields))]
@@ -60,52 +60,6 @@ pub struct Header {
 
     /// A chain-specific digest of data useful for light clients or referencing auxiliary data.
     pub digest: Digest<Hash>,
-}
-
-// Custom `Encode`/`Decode` implementation is needed because `Bloom` doesn't implement it.
-impl codec::Decode for Header {
-    fn decode<I: codec::Input>(input: &mut I) -> Result<Self, codec::Error> {
-        use codec::Decode;
-
-        Ok(Header {
-            parent_hash: Decode::decode(input)?,
-            timestamp: Decode::decode(input)?,
-            number: Decode::decode(input)?,
-            author: Decode::decode(input)?,
-            transactions_root: Decode::decode(input)?,
-            uncles_hash: Decode::decode(input)?,
-            extra_data: Decode::decode(input)?,
-            state_root: Decode::decode(input)?,
-            receipts_root: Decode::decode(input)?,
-            log_bloom: Bloom::from(<[u8; 256]>::decode(input)?),
-            gas_used: Decode::decode(input)?,
-            gas_limit: Decode::decode(input)?,
-            difficulty: Decode::decode(input)?,
-            seal: Decode::decode(input)?,
-            digest: Decode::decode(input)?,
-        })
-    }
-}
-
-// TODO: Wrap bloom.
-impl codec::Encode for Header {
-    fn encode_to<T: codec::Output>(&self, dest: &mut T) {
-        dest.push(&self.parent_hash);
-        dest.push(&self.timestamp);
-        dest.push(&self.number);
-        dest.push(&self.author);
-        dest.push(&self.transactions_root);
-        dest.push(&self.uncles_hash);
-        dest.push(&self.extra_data);
-        dest.push(&self.state_root);
-        dest.push(&self.receipts_root);
-        dest.push(&self.log_bloom.0);
-        dest.push(&self.gas_used);
-        dest.push(&self.gas_limit);
-        dest.push(&self.difficulty);
-        dest.push(&self.seal);
-        dest.push(&self.digest);
-    }
 }
 
 impl HeaderT for Header {
@@ -176,20 +130,5 @@ impl HeaderT for Header {
     /// Get a mutable reference to the digest.
     fn digest_mut(&mut self) -> &mut Digest<Self::Hash> {
         todo!();
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-    use codec::Encode;
-    use pretty_assertions::assert_eq;
-
-    #[test]
-    fn header_encode_decode() {
-        let header = Header::new(1, Hash::zero(), Hash::zero(), Hash::zero(), Digest::default());
-        let encoded = header.encode();
-        let decoded = codec::Decode::decode(&mut &encoded[..]).unwrap();
-        assert_eq!(header, decoded);
     }
 }

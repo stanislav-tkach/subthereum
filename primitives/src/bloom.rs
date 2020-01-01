@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(PartialEq, Eq, Clone, Copy, Default, sp_core::RuntimeDebug)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
-struct Bloom(ethbloom::Bloom);
+pub struct Bloom(ethbloom::Bloom);
 
 impl Decode for Bloom {
     fn decode<I: codec::Input>(input: &mut I) -> Result<Self, codec::Error> {
