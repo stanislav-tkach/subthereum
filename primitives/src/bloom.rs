@@ -1,5 +1,5 @@
 use ethbloom;
-use parity_scale_codec::{self as codec, Encode, Decode};
+use parity_scale_codec::{self as codec, Decode, Encode};
 #[cfg(feature = "std")]
 use serde::{Deserialize, Serialize};
 
@@ -26,10 +26,7 @@ mod tests {
 
     #[test]
     fn bloom_encode_decode() {
-        let data = [
-            Bloom(ethbloom::Bloom::default()),
-            Bloom([1; 256].into()),
-        ];
+        let data = [Bloom(ethbloom::Bloom::default()), Bloom([1; 256].into())];
 
         for &val in &data {
             let encoded = val.encode();

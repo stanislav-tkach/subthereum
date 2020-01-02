@@ -8,9 +8,10 @@
 #[cfg(feature = "std")]
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
+use primitives::{self, BlockNumber, Hash, Header};
+
 use grandpa::fg_primitives;
 use grandpa::AuthorityList as GrandpaAuthorityList;
-use primitives::{BlockNumber, Hash};
 use sp_api::impl_runtime_apis;
 use sp_consensus_aura::sr25519::AuthorityId as AuraId;
 use sp_core::OpaqueMetadata;
@@ -66,7 +67,7 @@ pub mod opaque {
     pub use sp_runtime::OpaqueExtrinsic as UncheckedExtrinsic;
 
     /// Opaque block header type.
-    pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
+    pub type Header = primitives::Header;
     /// Opaque block type.
     pub type Block = generic::Block<Header, UncheckedExtrinsic>;
     /// Opaque block identifier type.
@@ -132,7 +133,7 @@ impl system::Trait for Runtime {
     /// The hashing algorithm used.
     type Hashing = BlakeTwo256;
     /// The header type.
-    type Header = generic::Header<BlockNumber, BlakeTwo256>;
+    type Header = primitives::Header;
     /// The ubiquitous event type.
     type Event = Event;
     /// The ubiquitous origin type.
@@ -245,8 +246,6 @@ construct_runtime!(
 
 /// The address format for describing accounts.
 pub type Address = <Indices as StaticLookup>::Source;
-/// Block header type as expected by this runtime.
-pub type Header = generic::Header<BlockNumber, BlakeTwo256>;
 /// Block type as expected by this runtime.
 pub type Block = generic::Block<Header, UncheckedExtrinsic>;
 /// A Block signed with a Justification

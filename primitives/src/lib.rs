@@ -2,15 +2,15 @@
 
 mod bloom;
 
+use parity_scale_codec::{Decode, Encode};
+#[cfg(feature = "std")]
+use serde::{Deserialize, Serialize};
 use sp_core::{H160, H256, U256};
 use sp_runtime::{
     generic::Digest,
     traits::{BlakeTwo256, Header as HeaderT},
 };
 use sp_std::prelude::*;
-use parity_scale_codec::{Encode, Decode};
-#[cfg(feature = "std")]
-use serde::{Deserialize, Serialize};
 
 use bloom::Bloom;
 
@@ -101,7 +101,7 @@ impl HeaderT for Header {
         todo!();
     }
     /// Sets the extrinsic root.
-    fn set_extrinsics_root(&mut self, root: Self::Hash) {
+    fn set_extrinsics_root(&mut self, _root: Self::Hash) {
         todo!();
     }
 
@@ -110,7 +110,7 @@ impl HeaderT for Header {
         todo!();
     }
     /// Sets the state root.
-    fn set_state_root(&mut self, root: Self::Hash) {
+    fn set_state_root(&mut self, _root: Self::Hash) {
         todo!();
     }
 
