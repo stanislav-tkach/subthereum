@@ -21,6 +21,12 @@ pub type Address = H160;
 
 pub type BlockNumber = u64;
 
+/// A block header.
+///
+/// Reflects the specific RLP fields of a block in the chain with additional room for the seal
+/// which is non-specific.
+///
+/// Doesn't do all that much on its own.
 #[derive(PartialEq, Eq, Clone, Default, sp_core::RuntimeDebug, Encode, Decode)]
 #[cfg_attr(feature = "std", derive(Serialize, Deserialize))]
 #[cfg_attr(feature = "std", serde(rename_all = "camelCase"))]
@@ -131,4 +137,63 @@ impl HeaderT for Header {
     fn digest_mut(&mut self) -> &mut Digest<Self::Hash> {
         &mut self.digest
     }
+}
+
+/// A block, encoded as it is on the block chain.
+#[derive(Default, Debug, Clone, PartialEq)]
+pub struct Block {
+    /// The header of this block.
+    pub header: Header,
+    /// The transactions in this block.
+    pub transactions: Vec<UnverifiedTransaction>,
+    /// The uncles of this block.
+    pub uncles: Vec<Header>,
+}
+
+/// A set of information describing an externally-originating message call
+/// or contract creation operation.
+#[derive(Default, Debug, Clone, PartialEq, Eq)]
+pub struct Transaction {
+    /// Nonce.
+    pub nonce: U256,
+    /// Gas price.
+    pub gas_price: U256,
+    /// Gas paid up front for transaction execution.
+    pub gas: U256,
+    /// Action, can be either call or contract create.
+    pub action: Action,
+    /// Transfered value.
+    pub value: U256,
+    /// Transaction data.
+    pub data: Vec<u8>,
+}
+
+/// Signed transaction information without verified signature.
+#[derive(Debug, Clone, Eq, PartialEq)]
+pub struct UnverifiedTransaction {
+    /// Plain Transaction.
+    unsigned: Transaction,
+    /// The V field of the signature; the LS bit described which half of the curve our point falls
+    /// in. The MS bits describe which chain this transaction is for. If 27/28, its for all chains.
+    v: u64,
+    /// The R field of the signature; helps describe the point on the curve.
+    r: U256,
+    /// The S field of the signature; helps describe the point on the curve.
+    s: U256,
+    /// Hash of the transaction
+    hash: H256,
+}
+
+/// Transaction action type.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum Action {
+    /// Create creates new contract.
+    Create,
+    /// Calls contract at given address.
+    /// In the case of a transfer, this is the receiver's address.'
+    Call(Address),
+}
+
+impl Default for Action {
+    fn default() -> Action { Action::Create }
 }
